@@ -43,17 +43,31 @@ document.querySelector('#add-filter').addEventListener('input', function (ev) {
     rendertodos(todos, filters)
 })
 
-document.querySelector('#add_todo').addEventListener('click', function(ev) {
-    console.log('Button is working, yeahhhh!!!')
-    ev.target.textContent = 'TODO added'
+document.querySelector('#addToDo-form').addEventListener('submit', function (ev) {
+    ev.preventDefault()
+    const txt = ev.target.elements.todoInput.value
+    const newTodo = {
+        text: txt,
+        completed: false
+    }
+    ev.target.elements.todoInput.value = ''
+    todos.push(newTodo)
+    rendertodos(todos, filters)
 })
 
-document.querySelector('#remove-all-todos').addEventListener('click', function (ev) {
-    const allP = document.querySelectorAll('p')
-    allP.forEach(function (p) {
-        p.remove()
-    })
-})
+
+//document.querySelector('#remove-all-todos').addEventListener('click', function (ev) {
+//    const allP = document.querySelectorAll('p')
+//    allP.forEach(function (p) {
+//        p.remove()
+//    })
+//})
+
+//document.querySelector('#add_todo').addEventListener('click', function(ev) {
+//    console.log('Button is working, yeahhhh!!!')
+//    ev.target.textContent = 'TODO added'
+//})
+//
 
 //const getThingsToDo = function (todos) {
 //    return todos.filter(function (todo) {
