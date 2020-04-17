@@ -38,7 +38,7 @@ const rendertodos = function (todos, filters) {
 }
 rendertodos(todos, filters)
 
-document.querySelector('#add-input').addEventListener('input', function (ev) {
+document.querySelector('#add-filter').addEventListener('input', function (ev) {
     filters.serachText = ev.target.value
     rendertodos(todos, filters)
 })
