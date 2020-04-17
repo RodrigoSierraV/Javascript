@@ -12,24 +12,35 @@ const todos = [{
     completed: true
 }]
 
-const getThingsToDo = function (todos) {
-    return todos.filter(function (todo) {
-        return todo.completed === false
-    })
+const filters = {
+    serachText: ''
 }
 
-const todoLeft = getThingsToDo(todos)
+const rendertodos = function (todos, filters) {
+    const filtered = todos.filter(function (todo) {
+        return todo.text.toLowerCase().includes(filters.serachText.toLowerCase())
+    })
+    const getThingsToDo = filtered.filter(function (todo) {
+            return todo.completed === false
+    })
+    
+    document.querySelector('#todos-group').innerHTML = ''
 
-const new_p = document.createElement('h2')
+    const thingsToDo = document.createElement('h2')
+    thingsToDo.textContent = `You have ${getThingsToDo.length} todos left`
+    document.querySelector('#todos-group').appendChild(thingsToDo)
 
-new_p.textContent = `You have ${todoLeft.length} todos left:`
+    filtered.forEach(function (todo) {
+        const addToDo = document.createElement('p')
+        addToDo.textContent = todo.text
+        document.querySelector('#todos-group').appendChild(addToDo)
+    })
+}
+rendertodos(todos, filters)
 
-document.body.appendChild(new_p)
-
-todos.forEach(function (todo) {
-    const new_p = document.createElement('p')
-    new_p.textContent = todo.text
-    document.body.appendChild(new_p)
+document.querySelector('#add-input').addEventListener('input', function (ev) {
+    filters.serachText = ev.target.value
+    rendertodos(todos, filters)
 })
 
 document.querySelector('#add_todo').addEventListener('click', function(ev) {
@@ -44,9 +55,25 @@ document.querySelector('#remove-all-todos').addEventListener('click', function (
     })
 })
 
-document.querySelector('#add-input').addEventListener('input', function (ev) {
-    console.log(ev.target.value)
-})
+//const getThingsToDo = function (todos) {
+//    return todos.filter(function (todo) {
+//        return todo.completed === false
+//    })
+//}
+
+//const todoLeft = getThingsToDo(todos)
+
+//const new_p = document.createElement('h2')
+//
+//new_p.textContent = `You have ${todoLeft.length} todos left`
+//
+//document.body.appendChild(new_p)
+
+//todos.forEach(function (todo) {
+//    const new_p = document.createElement('p')
+//    new_p.textContent = todo.text
+//    document.querySelector('#todos-group').appendChild(new_p)
+//})
 
 //const ps = document.querySelectorAll('p')
 //
