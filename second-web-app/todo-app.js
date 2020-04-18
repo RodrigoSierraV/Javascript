@@ -1,22 +1,16 @@
-const todos = [{
-    text: 'buy groceries',
-    completed: false
-}, {
-    text: 'wash dishes',
-    completed: true
-}, {
-    text:'wash clothes',
-    completed: false
-}, {
-    text: 'study english',
-    completed: true
-}]
+let todos = []
 
 const filters = {
     serachText: '',
     hideCompleted: false
 }
 
+let todosLocal = localStorage.getItem('todos')
+
+if (todosLocal) {
+    todos.push(JSON.parse(todosLocal))
+    console.log(todos, 'TESTTTTTTTTTTTTT')
+}
 const rendertodos = function (todos, filters) {
     const filtered = todos.filter(function (todo) {
         if (filters.hideCompleted) {
@@ -52,7 +46,6 @@ document.querySelector('#checkTodos').addEventListener('click', function (ev) {
     rendertodos(todos, filters)
 })
 
-
 document.querySelector('#addToDo-form').addEventListener('submit', function (ev) {
     ev.preventDefault()
     const txt = ev.target.elements.todoInput.value
@@ -62,6 +55,7 @@ document.querySelector('#addToDo-form').addEventListener('submit', function (ev)
     }
     ev.target.elements.todoInput.value = ''
     todos.push(newTodo)
+    localStorage.setItem('todos', JSON.stringify(todos))
     rendertodos(todos, filters)
 })
 
