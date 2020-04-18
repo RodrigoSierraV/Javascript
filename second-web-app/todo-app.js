@@ -20,12 +20,14 @@ document.querySelector('#checkTodos').addEventListener('click', function (ev) {
 document.querySelector('#addToDo-form').addEventListener('submit', function (ev) {
     ev.preventDefault()
     const text = ev.target.elements.todoInput.value
-    todos.push({
+    const todo = {
         id: uuidv4(),
         text: text,
         completed: false
-    })
+    } 
+    todos.push(todo)
     saveTodos(todos)
     ev.target.elements.todoInput.value = ''
     rendertodos(todos, filters)
+    location.assign(`/edit-todo.html#${todo.id}`)
 })

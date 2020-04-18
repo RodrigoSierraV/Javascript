@@ -34,10 +34,11 @@ const generateTodoDOM = function (todo) {
         rendertodos(todos, filters)
     })
     addDiv.appendChild(addCheckbox)
-    // Create and append a span   
-    const addSpan = document.createElement('span')
-    addSpan.textContent = todo.text
-    addDiv.appendChild(addSpan)
+    // Create and append an anchor tag
+    const anchorTag = document.createElement('a')
+    anchorTag.textContent = todo.text
+    anchorTag.setAttribute('href', `/edit-todo.html#${todo.id}`)
+    addDiv.appendChild(anchorTag)
     // Create and append a button
     const removeButton = document.createElement('button')
     removeButton.textContent = 'x'
