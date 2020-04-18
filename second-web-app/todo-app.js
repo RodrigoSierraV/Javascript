@@ -13,11 +13,15 @@ const todos = [{
 }]
 
 const filters = {
-    serachText: ''
+    serachText: '',
+    hideCompleted: false
 }
 
 const rendertodos = function (todos, filters) {
     const filtered = todos.filter(function (todo) {
+        if (filters.hideCompleted) {
+            return todo.completed === false && todo.text.toLowerCase().includes(filters.serachText.toLowerCase())
+        }
         return todo.text.toLowerCase().includes(filters.serachText.toLowerCase())
     })
     const getThingsToDo = filtered.filter(function (todo) {
@@ -43,6 +47,12 @@ document.querySelector('#add-filter').addEventListener('input', function (ev) {
     rendertodos(todos, filters)
 })
 
+document.querySelector('#checkTodos').addEventListener('click', function (ev) {
+    filters.hideCompleted = ev.target.checked
+    rendertodos(todos, filters)
+})
+
+
 document.querySelector('#addToDo-form').addEventListener('submit', function (ev) {
     ev.preventDefault()
     const txt = ev.target.elements.todoInput.value
@@ -54,7 +64,6 @@ document.querySelector('#addToDo-form').addEventListener('submit', function (ev)
     todos.push(newTodo)
     rendertodos(todos, filters)
 })
-
 
 //document.querySelector('#remove-all-todos').addEventListener('click', function (ev) {
 //    const allP = document.querySelectorAll('p')
