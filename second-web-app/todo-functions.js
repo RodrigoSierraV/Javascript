@@ -10,18 +10,45 @@ const getSavedTodos = function () {
 
 // Save todo
 const saveTodos = function (todos, text) {
-    todos.push({
-        text: text,
-        completed: false
-    })
     localStorage.setItem('todos', JSON.stringify(todos))
 }
 
+const removeTodo = function (id) {
+    const getIndex = todos.findIndex(function (todo) {
+        return todo.id === id
+    })
+    if (getIndex > -1) {
+        todos.splice(getIndex, 1)
+    }
+}
 // Get DOM elements for an individual Todo
 const generateTodoDOM = function (todo) {
-    const addToDo = document.createElement('p')
-    addToDo.textContent = todo.text
-    return addToDo
+    const addDiv = document.createElement('div')
+    // Create and append a checkbox
+    const addCheckbox = document.createElement('input')
+    addCheckbox.setAttribute('type', 'checkbox')    
+    addCheckbox.checked = todo.completed
+    addCheckbox.addEventListener('change', function (ev) {
+        todo.completed = ev.target.checked
+        saveTodos(todos)
+        rendertodos(todos, filters)
+    })
+    addDiv.appendChild(addCheckbox)
+    // Create and append a span   
+    const addSpan = document.createElement('span')
+    addSpan.textContent = todo.text
+    addDiv.appendChild(addSpan)
+    // Create and append a button
+    const removeButton = document.createElement('button')
+    removeButton.textContent = 'x'
+    removeButton.addEventListener('click', function () {
+        removeTodo(todo.id)
+        saveTodos(todos)
+        rendertodos(todos, filters)
+    })
+    addDiv.appendChild(removeButton)
+
+    return addDiv
 }
 
 // Creates new h2 with things Todo

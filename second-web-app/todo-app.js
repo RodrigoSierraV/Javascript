@@ -19,8 +19,13 @@ document.querySelector('#checkTodos').addEventListener('click', function (ev) {
 
 document.querySelector('#addToDo-form').addEventListener('submit', function (ev) {
     ev.preventDefault()
-    const txt = ev.target.elements.todoInput.value
-    saveTodos(todos, txt)
+    const text = ev.target.elements.todoInput.value
+    todos.push({
+        id: uuidv4(),
+        text: text,
+        completed: false
+    })
+    saveTodos(todos)
     ev.target.elements.todoInput.value = ''
     rendertodos(todos, filters)
 })
