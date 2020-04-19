@@ -1,4 +1,4 @@
-const todos = getSavedTodos()
+let todos = getSavedTodos()
 
 const filters = {
     serachText: '',
@@ -23,11 +23,19 @@ document.querySelector('#addToDo-form').addEventListener('submit', function (ev)
     const todo = {
         id: uuidv4(),
         text: text,
-        completed: false
+        completed: false,
+        body: ''
     } 
     todos.push(todo)
     saveTodos(todos)
     ev.target.elements.todoInput.value = ''
     rendertodos(todos, filters)
     location.assign(`/edit-todo.html#${todo.id}`)
+})
+
+window.addEventListener('storage', function (ev) {
+    if (ev.key === 'todos') {
+        todos = JSON.parse(ev.newValue)
+        rendertodos(todos, filters)
+    }
 })

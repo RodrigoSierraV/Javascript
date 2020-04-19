@@ -9,7 +9,7 @@ const getSavedTodos = function () {
 }
 
 // Save todo
-const saveTodos = function (todos, text) {
+const saveTodos = function (todos) {
     localStorage.setItem('todos', JSON.stringify(todos))
 }
 
