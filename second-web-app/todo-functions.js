@@ -30,6 +30,7 @@ const generateTodoDOM = function (todo) {
     addCheckbox.checked = todo.completed
     addCheckbox.addEventListener('change', function (ev) {
         todo.completed = ev.target.checked
+        todo.updatedAt = moment().valueOf()
         saveTodos(todos)
         rendertodos(todos, filters)
     })
@@ -76,4 +77,9 @@ const rendertodos = function (todos, filters) {
     filtered.forEach(function (todo) {
         document.querySelector('#todos-group').appendChild(generateTodoDOM(todo))
     })
+}
+
+// Change span Last edited message in edit-todo
+const changeLastEdited = function (timeStamp) {
+    return `Last edited ${moment(timeStamp).fromNow()}`
 }

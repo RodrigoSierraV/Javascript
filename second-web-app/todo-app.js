@@ -1,3 +1,4 @@
+const timeNow = moment().valueOf()
 let todos = getSavedTodos()
 
 const filters = {
@@ -24,7 +25,9 @@ document.querySelector('#addToDo-form').addEventListener('submit', function (ev)
         id: uuidv4(),
         text: text,
         completed: false,
-        body: ''
+        body: '',
+        createdAt: timeNow,
+        updatedAt: timeNow
     } 
     todos.push(todo)
     saveTodos(todos)

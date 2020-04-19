@@ -12,6 +12,8 @@ let inputTitle = document.querySelector('#input-title')
 inputTitle.value = todo.text
 inputTitle.addEventListener('input', function (ev) {
     todo.text = ev.target.value
+    todo.updatedAt = moment().valueOf()
+    status.textContent = changeLastEdited(todo.updatedAt)
     saveTodos(todos)
 })
 
@@ -19,6 +21,8 @@ let bodyText = document.querySelector('#body-text')
 bodyText.value = todo.body
 bodyText.addEventListener('input', function (ev) {
     todo.body = ev.target.value
+    todo.updatedAt = moment().valueOf()
+    status.textContent = changeLastEdited(todo.updatedAt)
     saveTodos(todos)
 })
 
@@ -29,6 +33,8 @@ removeButton.addEventListener('click', function () {
     location.assign('/index.html')
 })
 
+let status = document.querySelector('#status')
+status.textContent = changeLastEdited(todo.updatedAt)
 window.addEventListener('storage', function (ev) {
     if (ev.key === 'todos') {
         todos = JSON.parse(ev.newValue)
@@ -40,5 +46,6 @@ window.addEventListener('storage', function (ev) {
         }
         inputTitle.value = todo.text
         bodyText.value = todo.body
+        status.textContent = changeLastEdited(todo.updatedAt)
     }
 })
