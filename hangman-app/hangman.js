@@ -4,11 +4,9 @@ console.log(hang2.status)
 let puzzle = document.querySelector('#puzzle')
 puzzle.textContent = hang2.puzzleBack()
 
-//let guessesLeft = document.querySelector('#guesses')
-//guessesLeft.textContent = `Remaining Guesses ${hang2.remainingGuesses}`
-
 let messages = document.querySelector('#messages')
 messages.textContent = hang2.statusMessages()
+
 window.addEventListener('keypress', function (ev) {
     hang2.makeGuess(ev.key)
     puzzle.textContent = hang2.puzzleBack()
@@ -16,3 +14,15 @@ window.addEventListener('keypress', function (ev) {
     console.log(hang2.status)
 })
 
+get_puzzle((error, phrase) => {
+    if (error) {
+        console.log(`Error: ${error}`)
+    } else {
+        console.log('Puzzle1', phrase)
+    }
+})
+console.log('Do something while request is done')
+
+const puzzle2 = get_puzzleSync()
+console.log('Puzzle2', puzzle2)
+console.log('Do NOTHING until request is done')
