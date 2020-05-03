@@ -1,18 +1,27 @@
-const hang2 = new Hangman('New Jersey', 4)
-console.log(hang2.status)
-
 let puzzle = document.querySelector('#puzzle')
-puzzle.textContent = hang2.puzzleBack()
-
 let messages = document.querySelector('#messages')
-messages.textContent = hang2.statusMessages()
+let game
 
 window.addEventListener('keypress', function (ev) {
-    hang2.makeGuess(ev.key)
-    puzzle.textContent = hang2.puzzleBack()
-    messages.textContent = hang2.statusMessages()
-    console.log(hang2.status)
+    game.makeGuess(ev.key)
+    renderGame()
 })
+
+const renderGame = () => {
+    puzzle.textContent = game.puzzleBack()
+    messages.textContent = game.statusMessages()
+}
+
+const startGame = async () => {
+    const puzzle = await getPuzzleAsync()
+    game = new Hangman(puzzle, 5)
+    renderGame()
+}
+
+startGame()
+
+const resetButton = document.querySelector('#reset')
+resetButton.addEventListener('click', startGame)
 
 get_puzzle((error, phrase) => {
     if (error) {
@@ -26,3 +35,24 @@ console.log('Do something while request is done')
 const puzzle2 = get_puzzleSync()
 console.log('Puzzle2', puzzle2)
 console.log('Do NOTHING until request is done')
+
+get_puzzle_promise('4').then((puzzle) => {
+    console.log(puzzle)
+}, (error) => {
+    console.log(error)
+})
+
+const fetchPromise = fetch('http://puzzle.mead.io/puzzle').then((response) => {
+    if (response.status === 200) {
+        return response.json()
+    }
+    throw new Error
+}).then((data) => {
+    return data.puzzle
+}).catch((error) => {
+    return 'THERE was an error'
+})
+
+fetchPromise.then((puzzle) => {
+    console.log('PUZZLE from fetch API:', puzzle)
+})
