@@ -1,3 +1,10 @@
+import { convert } from './utilities'
+
+console.log(convert('HELLO'))
+
+console.log('USING WEBPACK')
+
+
 const name = 'Jen'
 console.log(name)
 
