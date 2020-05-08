@@ -1,0 +1,77 @@
+COMMANDS:
+    docker-compose up  :it do not check for changes in images
+                        start all services and works in the foreground
+                        with -d make every thing in the background
+                        with --build it'll rebuild the images
+    docker-compose down  : stop and delete network/containers with -v it'll delete volumes  
+    docker-compose build  : if --no-cache it'll build images from scratch
+    docker-compose stop
+    docker-compose ps
+    docker-compose push : images to registry
+    docker-compose logs
+    docker-compose exec service sh : open shell inside service
+
+DOCKERFILE BASICS:
+    Use COPY, not ADD because ADD has more features and can have side effects
+    
+    Install npm/yarn during build
+    
+    CMD instruction allows you to set a default command, which will be executed only when you run
+        container without specifying a command. If Docker container runs with a command, the default
+        command will be ignored. If Dockerfile has more than one CMD instruction, all but last CMD
+        instructions are ignored
+    
+    Use CMD node, not npm
+        npm requires another applicatio to run
+        not as literal in Docker files
+        doesn't work well as init for PID 1 process
+    WORKDIR not RUN mkdir : unless we need chown
+        WORKDIR creates a directory
+    
+    FROM Base Image guiudelines
+        Stick to even numbered major releases of node
+        Don't use: latest tag
+        alpine instead of Debian unless migrating
+        Don't use: slim
+        Don't use: onbuild
+    
+    When to use alpine:
+        Small and security focused
+        Alpine has its own issues
+        Alpine CVE scanning fails
+
+Using node User:
+    official node images have node user but it's not used by default
+    use node user after apt/apk/yum and npm i -g because this needs root
+    use node user before npm i
+    may cause permission issues
+    USER node : set up the node user
+    RUN mkdir app && chown -R node:node : set permissions on the app dir
+    docker-compose exec -u root : allow root user to run commands
+
+Making images efficient:
+    line order matters:
+        EXPOSE after FROM
+        1. copy only the package and lock files
+        2. RUN npm install
+        3. COPY everything else which means COPY . .
+    Install packages at the top of the file to prevent cache busted : means cache forgets that layer
+
+Node process mangement:
+    No need for nodemon, forever, or pm2 on server
+    Docker manages app start, stop, restart and healthcheck
+    Node multi-thread: Docker manages multiple replicas
+    One npm/node problem: they don't respond to shutdown signals by default
+    Zombie processes are not a big Node issues
+    Focus on proper Node shutdown
+    Proper CMD to shutdown:
+        Docker uses Linux signals to stop the app
+        SIGINT/SIGTERM allow graceful stop
+        npm doesn't respond to SIGINT/SIGTERM
+        node can respond to Linux signals with code
+        Docker provides  an init PID 1 replcament option
+    Proper Node shutdown options
+
+
+
+
